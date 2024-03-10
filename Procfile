@@ -1,1 +1,1 @@
-web: python budget_flask.py
+web: python __init__.py
