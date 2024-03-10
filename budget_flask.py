@@ -6,8 +6,6 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-
 
 app = Flask(__name__, 
             static_url_path='', 
