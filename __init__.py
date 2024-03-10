@@ -13,6 +13,9 @@ app = Flask(__name__,
             static_folder='web/static',
             template_folder='web/templates')
 
+def addlabels(x,y):
+    for i in range(len(x)):
+        plt.text(i, y[i], y[i], ha = 'center')
 
 def monthlySpendIn(year): 
     response = requests.get('https://budget-drewleean-80248645fdf0.herokuapp.com/expenses/year/' + str(year))
@@ -30,10 +33,13 @@ def monthlySpendIn(year):
             spend_by_month[x["date"][5:7]] = x["amount"]
 
     temp = []
+    exes = []
+    wives =[]
 
     for k in sorted(spend_by_month.keys()): 
-        print(type(k))
         temp.append({"month": months[k], "amount":spend_by_month[k]})
+        exes.append(months[k])
+        wives.append(spend_by_month[k])
 
     data = {"monthly": temp}
     
@@ -41,6 +47,8 @@ def monthlySpendIn(year):
 
     df = pd.DataFrame(data['monthly'])
     d = df.plot.bar(x="month", y="amount")
+    addlabels(exes, wives)
+
 
     return d
 
@@ -60,3 +68,7 @@ if __name__ == "__main__":
 #Used documentation (non-exhaustive):
 #https://stackoverflow.com/questions/44618376/easiest-way-to-plot-data-from-json-with-matplotlib    
 #https://matplotlib.org/stable/gallery/user_interfaces/web_application_server_sgskip.html
+#https://stackoverflow.com/questions/17260338/deploying-flask-with-heroku
+#https://cs.wellesley.edu/~webdb/lectures/flask/flask.html\
+#https://flask.palletsprojects.com/en/3.0.x/tutorial/deploy/
+#https://www.geeksforgeeks.org/adding-value-labels-on-a-matplotlib-bar-chart/
