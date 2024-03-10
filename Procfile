@@ -1,1 +1,1 @@
-web:python budget_flask.py runserver %PORT%
+web: python budget_flask.py
