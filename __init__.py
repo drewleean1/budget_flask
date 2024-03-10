@@ -52,7 +52,8 @@ def createBar(year):
     return f"<img src='data:image/png;base64,{data}'/>"
 
 if __name__ == "__main__": 
-    app.run(host='0.0.0.0', port=environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port = int(os.environ.get('PORT', 33507)))
+
 
 
 #Used documentation (non-exhaustive):
