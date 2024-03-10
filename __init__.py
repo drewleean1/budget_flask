@@ -37,7 +37,7 @@ def monthlySpendIn(year):
     wives =[]
 
     for k in sorted(spend_by_month.keys()): 
-        temp.append({"month": months[k], "amount":spend_by_month[k]})
+        temp.append({"month": months[k], "amount":round(spend_by_month[k],2)})
         exes.append(months[k])
         wives.append(spend_by_month[k])
 
