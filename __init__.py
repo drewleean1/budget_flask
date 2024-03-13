@@ -52,12 +52,54 @@ def monthlySpendIn(year):
     d = df.plot.bar(x="month", y="amount")
     addlabels(exes, wives)
 
+    return d
+
+def catSpendIn(month, year): 
+    response = requests.get('https://budget-drewleean-80248645fdf0.herokuapp.com/expenses/month/' + str(month) + '/year/' +str(year)) 
+    response = json.loads(response.text)
+    
+    spend_by_cat = {}
+
+    for x in response: 
+        if x["amount"] < 0: continue
+        try: 
+            spend_by_cat[x["category"]] += x["amount"]
+        except: 
+            spend_by_cat[x["category"]] = x["amount"]
+
+    for x in spend_by_cat.keys(): 
+        spend_by_cat[x] = round(spend_by_cat[x], 0)
+
+    temp = []
+    exes = []
+    wives = []
+
+    for k in spend_by_cat.keys(): 
+        temp.append({"category": k, "amount": spend_by_cat[k]})
+        exes.append(k)
+        wives.append(spend_by_cat[k])
+
+
+    data = {"category": temp}
+
+    fig = Figure()
+    df = pd.DataFrame(data["category"])
+    d = df.plot.bar(x="category", y = "amount")
+    addlabels(exes,wives)
 
     return d
 
 @app.route("/createBar/<year>")
 def createBar(year):
     plot = monthlySpendIn(year)
+    buf = BytesIO()
+    plot.figure.savefig(buf, format="png")
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return f"<img src='data:image/png;base64,{data}'/>"
+
+@app.route("/catBar/<month>/<year>")
+def categoryBar(month, year): 
+    plot = catSpendIn(month, year)
     buf = BytesIO()
     plot.figure.savefig(buf, format="png")
     data = base64.b64encode(buf.getbuffer()).decode("ascii")
